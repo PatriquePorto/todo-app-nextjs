@@ -20,13 +20,27 @@ export default function Home() {
     // Load tasks from local storage when the component mounts
     const storedTasks = localStorage.getItem('tasks');
     if (storedTasks) {
-      setTasks(JSON.parse(storedTasks));
+      try {
+        const parsedTasks = JSON.parse(storedTasks);
+        if (Array.isArray(parsedTasks)) {
+          setTasks(parsedTasks);
+        } else {
+          console.error('Invalid tasks data in local storage:', storedTasks);
+        }
+      } catch (error) {
+        console.error('Error parsing tasks from local storage:', error);
+      }
     }
   }, []);
 
   useEffect(() => {
     // Save tasks to local storage whenever tasks change
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+    const tasksToSave = JSON.stringify(tasks);
+    try {
+      localStorage.setItem('tasks', tasksToSave);
+    } catch (error) {
+      console.error('Error saving tasks to local storage:', error);
+    }
   }, [tasks]);
 
   const addTask = () => {
@@ -81,7 +95,9 @@ export default function Home() {
             <div className="divide-y divide-gray-200">
               <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
                 <h1 className="text-3xl font-extrabold text-center">TODO App NextJs</h1>
+               
                 <div className="flex mt-4">
+                  
                   <input
                     type="text"
                     value={newTask}
@@ -89,6 +105,7 @@ export default function Home() {
                     className="flex-grow px-4 py-2 text-base border rounded-lg focus:outline-none focus:border-blue-500"
                     placeholder="Add a new task"
                   />
+                  
                   <button
                     onClick={addTask}
                     className="ml-2 px-4 py-2 text-base font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
@@ -96,15 +113,20 @@ export default function Home() {
                     Add
                   </button>
                 </div>
+                
                 <ul className="mt-4 space-y-2">
-                  {tasks.map(task => (
-                    <li key={task.id} className="flex items-center space-x-2">
+                  
+                  {tasks.map((task, index) => (   
+                     <React.Fragment key={task.id}>  
+                     {index > 0 && <hr className='border-gray-300 ' />}              
+                    <li  className="flex items-center space-x-2">
                       <input
                         type="checkbox"
                         checked={task.completed}
                         onChange={() => toggleComplete(task.id)}
                         className="h-5 w-5 text-blue-600"
                       />
+                      
                       {editingTask === task.id ? (
                         <input
                           type="text"
@@ -117,6 +139,7 @@ export default function Home() {
                           {task.text}
                         </span>
                       )}
+                       
                       {editingTask === task.id ? (
                         <button
                           onClick={() => saveEdit(task.id)}
@@ -154,15 +177,19 @@ export default function Home() {
                               >
                                 No
                         </button>
+                       
                       </div>
+                     
                   </div>
               )}
                     </li>
+                    </React.Fragment>     
                   ))}
+                 
                 </ul>
               </div>
             </div>
-          </div>
+          </div>      
         </div>
       </div>
     </div>
