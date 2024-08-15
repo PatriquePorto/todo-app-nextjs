@@ -162,7 +162,7 @@ export default function Home() {
                           Delete
                         </button>
                         {showDeleteConfirm && (
-                          <div className="fixed top-20 left-56 right-56 bottom-80 bg-gray-500 rounded-lg bg-opacity-75 flex justify-center items-center">
+                          <div className="fixed top-0 left-0 right-0 bottom-0 bg-gray-500 rounded-lg bg-opacity-25 flex justify-center items-center">
                             <div className="bg-white p-4 mb-52 rounded shadow-md">
                               <p>Are you sure you want to delete this task?</p>
                               <button
