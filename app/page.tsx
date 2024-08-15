@@ -13,6 +13,8 @@ export default function Home() {
   const [newTask, setNewTask] = useState('');
   const [editingTask, setEditingTask] = useState<number | null>(null);
   const [editText, setEditText] = useState('');
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [taskIdToDelete, setTaskIdToDelete] = useState<number | null>(null);
 
   useEffect(() => {
     // Load tasks from local storage when the component mounts
@@ -41,8 +43,22 @@ export default function Home() {
   };
 
   const deleteTask = (id: number) => {
-    setTasks(tasks.filter(task => task.id !== id));
+    setTaskIdToDelete(id);
+    setShowDeleteConfirm(true);
   };
+  
+  const handleDeleteConfirm = () => {
+    if (taskIdToDelete !== null) {
+      setTasks(tasks.filter(task => task.id !== taskIdToDelete));
+    }
+    setShowDeleteConfirm(false);
+  };
+  
+  const handleDeleteCancel = () => {
+    setShowDeleteConfirm(false);
+  };
+
+
 
   const startEditing = (id: number, text: string) => {
     setEditingTask(id);
@@ -116,12 +132,31 @@ export default function Home() {
                           Edit
                         </button>
                       )}
-                      <button
-                        onClick={() => deleteTask(task.id)}
-                        className="px-2 py-1 text-sm text-white bg-red-500 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-                      >
-                        Delete
-                      </button>
+                     <button
+                          onClick={() => deleteTask(task.id)}
+                          className="px-2 py-1 text-sm text-white bg-red-500 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                        >
+                          Delete
+                        </button>
+                        {showDeleteConfirm && (
+                          <div className="fixed top-20 left-56 right-56 bottom-80 bg-gray-500 rounded-lg bg-opacity-75 flex justify-center items-center">
+                            <div className="bg-white p-4 mb-52 rounded shadow-md">
+                              <p>Are you sure you want to delete this task?</p>
+                              <button
+                                onClick={handleDeleteConfirm}
+                                className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                              >
+                                Yes
+                              </button>
+                              <button
+                                onClick={handleDeleteCancel}
+                                className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+                              >
+                                No
+                        </button>
+                      </div>
+                  </div>
+              )}
                     </li>
                   ))}
                 </ul>
