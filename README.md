@@ -1,5 +1,5 @@
 </br>
-<img src="/preview" width="100%"></img>
+<img src="/preview.png" width="100%"></img>
 </br>
 
 
