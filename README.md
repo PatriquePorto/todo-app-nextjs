@@ -1,3 +1,8 @@
+</br>
+<img src="/preview" width="100%"></img>
+</br>
+
+
 # TODO App Next.js
 
 This is a simple TODO app built with Next.js. It allows you to add, edit, and delete tasks. The app stores the tasks in the browser's local storage.

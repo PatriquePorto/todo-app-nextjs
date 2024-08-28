@@ -9,6 +9,7 @@ interface Task {
 }
 
 export default function Home() {
+  // Define state variables
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTask, setNewTask] = useState('');
   const [editingTask, setEditingTask] = useState<number | null>(null);
@@ -33,8 +34,8 @@ export default function Home() {
     }
   }, []);
 
+  // Save tasks to local storage whenever tasks change
   useEffect(() => {
-    // Save tasks to local storage whenever tasks change
     const tasksToSave = JSON.stringify(tasks);
     try {
       localStorage.setItem('tasks', tasksToSave);
@@ -42,7 +43,7 @@ export default function Home() {
       console.error('Error saving tasks to local storage:', error);
     }
   }, [tasks]);
-
+ 
   const addTask = () => {
     if (newTask.trim() !== '') {
       setTasks([...tasks, { id: Date.now(), text: newTask, completed: false }]);
@@ -71,8 +72,6 @@ export default function Home() {
   const handleDeleteCancel = () => {
     setShowDeleteConfirm(false);
   };
-
-
 
   const startEditing = (id: number, text: string) => {
     setEditingTask(id);
